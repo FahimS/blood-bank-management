@@ -1,0 +1,207 @@
+<?php
+//Database Connection
+$conn =mysqli_connect("localhost","root","","blood") or die (mysql_error());
+//Get ID from Database
+if(isset($_GET['id'])){
+	$sql = "SELECT * from add_admin WHERE id =" .$_GET['id'];
+	$result = mysqli_query($conn, $sql);
+	$row = mysqli_fetch_array($result);
+}
+//Update Information
+if(isset($_POST['btn-update'])){
+	$name=$_POST['name'];
+	$username=$_POST['username'];
+	$email=$_POST['email'];
+	$password=$_POST['password'];
+	$gender=$_POST['gender'];
+	$bgroup=$_POST['bgroup'];
+	$mobile=$_POST['mobile'];
+	$address=$_POST['address'];
+	
+	
+	$update = "UPDATE add_admin SET name='$name', username='$username' , email='$email' , password='$password' , gender='$gender' , bgroup='$bgroup' , mobile='$mobile' , address='$address' WHERE id=". $_GET['id'];
+	$up = mysqli_query($conn, $update);
+	if(!isset($sql)){
+		die ("Error $sql" .mysqli_connect_error());
+	}
+	else
+	{
+		header("location: view_admin.php");
+	}
+}
+?>
+<!--Create Edit form -->
+<!doctype html>
+<html>
+
+<head>
+<link rel="stylesheet" href="../../assets/css/w3.css">
+<link rel="stylesheet" href="../../assets/css/style-main.css">
+<link rel="stylesheet" href="../../assets/css/bootstrap-v3.3.css">
+<link rel="stylesheet" href="../../assets/css/font-awesome/css/all.css">
+<link rel="stylesheet" href="../../assets/css/style-info.css">
+
+</head>
+<div class="w3-sidebar w3-light-grey w3-bar-block" style="width:20%;top: 0;background-color: #75E3FF;">
+   <h3 class="bbb" style="height: 8.5%;color: #B22222;font-weight: bold;">UAP BLOOD BANK</h3>
+  <a href="add_admin.php" class="w3-bar-item w3-button">Add Admin</a>
+  <a href="view_admin.php" class="w3-bar-item w3-button">View Admin</a><br>
+
+  <a href="view_donor.php" class="w3-bar-item w3-button">View Donor</a><br>
+
+  <a href="add_venue.php" class="w3-bar-item w3-button">Add Venue</a>
+  <a href="view_venue.php" class="w3-bar-item w3-button">View Venue</a><br>
+
+    <a href="add_bank.php" class="w3-bar-item w3-button">Add Blood Bank</a>
+  <a href="view_bank.php" class="w3-bar-item w3-button">View Blood Bank</a>
+  
+</div>
+
+<div class="header">
+  
+   <h4>Admin Summery</h4>
+   
+</div>>
+
+<body>
+<div id="main-page" style=margin-left:18%>
+   <div class="col-md-10 col-md-offset-1 form-style"  style="background:transparent">
+<div class="col-md-12 entry-head margin-20b">
+        
+        <!-- <a class="btn btn-primary right" href="view-teacher.php">View Teachers</a> -->
+    </div>
+<div class="col-md-10 col-md-offset-1 ">
+<form id="edit_form" role="form" data-toggle="validator" method="post" class="form-horizontal">
+<div class="row">
+ <div class="form-group">
+
+
+<label for="name" class="control-label col-sm-3">Name:</label>
+ <div class="col-sm-8">
+<input type="text" class="form-control" name="name" placeholder="Name" value="<?php echo $row['name']; ?>">
+
+     </div>
+    </div>
+    
+    <div class="form-group">
+<label for="l_name" class="control-label col-sm-3">Username:</label>
+ <div class="col-sm-8">
+<input type="text" class="form-control" name="username" placeholder="Userame" value="<?php echo $row['username']; ?>">
+
+     </div>
+    </div>
+
+<div class="form-group">
+
+ <label for="email" class="control-label col-sm-3">Email:</label>
+ <div class="col-sm-8">
+ 
+<input type="text" class="form-control" name="email" placeholder="Email" value="<?php echo $row['email']; ?>">
+
+    </div>
+    </div>
+
+
+    <div class="form-group">
+
+ <label for="password" class="control-label col-sm-3">Password:</label>
+ <div class="col-sm-8">
+ 
+<input type="password" class="form-control" name="password" placeholder="Password" value="<?php echo $row['password']; ?>">
+
+    </div>
+    </div>
+
+
+
+
+
+<div class="form-group">
+
+<label for="gender" class="control-label col-sm-3">Gender:</label>
+
+  <div class="col-sm-8">
+  
+  <select class="form-control" name="gender" value="<?php echo $row['gender']; ?>">
+
+<option>Male</option>
+<option>Female</option>
+                            
+</select>
+</div>
+</div>
+
+<div class="form-group">
+
+<label for="bgroup" class="control-label col-sm-3">Blood Group:</label>
+<div class="col-sm-8">
+
+<select class="form-control" name="bgroup" value="<?php echo $row['bgroup']; ?>">
+
+<option>B+</option>
+<option>O+</option>
+</select>
+</div>
+</div>
+
+
+<div class="form-group">
+<label for="mobile" class="control-label col-sm-3">Mobile:</label>
+<div class="col-sm-8">
+
+<input type="text" class="form-control" name="mobile" placeholder="Mobile" value="<?php echo $row['mobile']; ?>">
+
+    </div>
+    </div>
+
+
+
+
+
+<div class="form-group">
+<label for="addr" class="control-label col-sm-3">Address:</label>
+
+<div class="col-sm-8">
+
+
+<textarea class="form-control" name="address" cols="8" rows="6" required><?php echo $row['address'];?></textarea>
+    </div>
+    </div>
+    
+    <div class="form-group">
+                   
+                    <input type="submit" name="btn-update" value="Update" class="btn btn-success col-md-offset-4 col-sm-offset-4 col-xs-offset-2" onClick="update()"/>
+                    
+                    
+                    <input type="button" value="Clear" class="btn btn-primary col-md-offset-3 col-sm-offset-3 col-xs-offset-3" onclick="reset_btn()"/>
+                    
+                </div>
+                
+                
+
+    </div>
+    </form>
+    </div>
+</div>
+</div>
+
+
+<!-- Alert for Updating -->
+<script>
+function update(){
+	var x;
+	if(confirm("Updated data Sucessfully") == true){
+		x= "update";
+	}
+}
+</script>
+
+<script>
+    
+function reset_btn() {
+    document.getElementById("edit_form").reset();
+}
+</script>
+</body>
+
+</html>
